@@ -2,7 +2,6 @@ package config
 
 var (
 	APP_NAME    string
-	APP_VERSION string
 	ENVIRONMENT string
 )
 
@@ -12,8 +11,12 @@ var (
 )
 
 var (
-	MONGODB_URI  string
-	MONGODB_NAME string
+	MONGODB_URI         string
+	MONGODB_NAME        string
+	MONGO_ROOT_USER     string
+	MONGO_ROOT_PASSWORD string
+	MONGODB_HOST        string
+	MONGODB_PORT        string
 )
 
 var (

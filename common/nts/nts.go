@@ -10,10 +10,10 @@ import (
 	"go.uber.org/zap"
 )
 
-const (
+var (
 	maxInitRetries = 5
 	initRetryDelay = 2 * time.Second
-	checkInterval  = 30 * time.Second
+	checkInterval  = 10 * time.Second
 	driftThreshold = 10 * time.Millisecond
 )
 

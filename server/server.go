@@ -1,8 +1,6 @@
 package server
 
 import (
-	"fmt"
-
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/cors"
 	"go.uber.org/zap"
@@ -18,7 +16,7 @@ func Run(address string) {
 		CaseSensitive: true,
 		StrictRouting: false,
 		ServerHeader:  config.APP_NAME,
-		AppName:       fmt.Sprintf("%s %s", config.APP_NAME, config.APP_VERSION),
+		AppName:       config.APP_NAME,
 	})
 
 	app.Use(RecoverMiddleware)

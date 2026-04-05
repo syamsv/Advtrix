@@ -61,7 +61,7 @@ func validateHash(id, providedHash, secret string) (bool, error) {
 	step := uint64(config.STEPSECOND)
 	currentCounter := uint64(now.Unix()) / step
 
-	for _, counter := range []uint64{currentCounter - 1, currentCounter, currentCounter + 1} {
+	for _, counter := range []uint64{currentCounter - 1, currentCounter} {
 		code, err := totp.GenerateTOTPAtCounter(secret, counter)
 		if err != nil {
 			return false, err

@@ -14,14 +14,23 @@ func LoadConfig(filename, filetype, path string) {
 	importConfig(filename, filetype, path)
 
 	APP_NAME = viper.GetString("APP_NAME")
-	APP_VERSION = viper.GetString("APP_VERSION")
 	ENVIRONMENT = viper.GetString("ENVIRONMENT")
 
 	SERVER_ADDRESS = viper.GetString("SERVER_ADDRESS")
 	INTERNAL_AUTH_PARAMATER = viper.GetString("INTERNAL_AUTH_PARAMATER")
 
-	MONGODB_URI = viper.GetString("MONGODB_URI")
 	MONGODB_NAME = viper.GetString("MONGODB_NAME")
+	MONGODB_HOST = viper.GetString("MONGODB_HOST")
+	MONGODB_PORT = viper.GetString("MONGODB_PORT")
+	MONGO_ROOT_USER = viper.GetString("MONGO_ROOT_USER")
+	MONGO_ROOT_PASSWORD = viper.GetString("MONGO_ROOT_PASSWORD")
+	MONGODB_URI = fmt.Sprintf("mongodb://%s:%s@%s:%s/%s?authSource=admin",
+		MONGO_ROOT_USER,
+		MONGO_ROOT_PASSWORD,
+		MONGODB_HOST,
+		MONGODB_PORT,
+		MONGODB_NAME,
+	)
 
 	REDIS_ADDRESS = viper.GetString("REDIS_ADDRESS")
 	REDIS_PASSWORD = viper.GetString("REDIS_PASSWORD")
@@ -48,8 +57,11 @@ func importConfig(filename, filetype, path string) {
 	viper.SetDefault("SERVER_ADDRESS", ":9000")
 
 	// Database defaults.
-	viper.SetDefault("MONGODB_URI", "mongodb://localhost:27017")
+	viper.SetDefault("MONGODB_HOST", "localhost")
+	viper.SetDefault("MONGODB_PORT", "27017")
 	viper.SetDefault("MONGODB_NAME", "advtrix")
+	viper.SetDefault("MONGO_ROOT_USER", "root")
+	viper.SetDefault("MONGO_ROOT_PASSWORD", "secret")
 	viper.SetDefault("REDIS_ADDRESS", "localhost:6379")
 	viper.SetDefault("REDIS_DB", 0)
 
@@ -85,8 +97,12 @@ func validate() {
 		log.Panicln("SERVER_ADDRESS must not be empty")
 	}
 
-	if MONGODB_URI == "" {
-		log.Panicln("MONGODB_URI must not be empty")
+	if MONGODB_HOST == "" {
+		log.Panicln("MONGODB_HOST must not be empty")
+	}
+
+	if MONGODB_PORT == "" {
+		log.Panicln("MONGODB_PORT must not be empty")
 	}
 
 	if INTERNAL_AUTH_PARAMATER == "" {

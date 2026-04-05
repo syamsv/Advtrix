@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/syamsv/Advtrix/config"
 	"github.com/syamsv/Advtrix/common/nts"
+	"github.com/syamsv/Advtrix/config"
 )
 
 var (
@@ -46,13 +46,17 @@ func GenerateTOTP(secret string) (string, int, error) {
 		return "", 0, err
 	}
 
-	now := nts.Now()
-	step := config.STEPSECOND
-	counter := uint64(now.Unix()) / uint64(step)
+	now := nts.Now().Unix()
+	step := int64(config.STEPSECOND)
+
+	// Standard TOTP Counter calculation
+	counter := uint64(now / step)
 
 	hash := calculateHash(key, counter)
 	code := truncate(hash)
-	remaining := step - (int(now.Unix()) % step)
+
+	// Correctly calculate time left in this specific window
+	remaining := int(step - (now % step))
 
 	return fmt.Sprintf("%06d", code), remaining, nil
 }

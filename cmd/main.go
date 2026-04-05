@@ -42,7 +42,6 @@ func main() {
 		zap.String("address", config.SERVER_ADDRESS),
 		zap.String("env", config.ENVIRONMENT),
 		zap.String("app", config.APP_NAME),
-		zap.String("version", config.APP_VERSION),
 	)
 
 	quit := make(chan os.Signal, 1)
