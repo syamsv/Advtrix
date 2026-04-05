@@ -7,8 +7,8 @@ import (
 	"github.com/gofiber/fiber/v3/middleware/cors"
 	"go.uber.org/zap"
 
-	v1 "github.com/syamsv/go-template/api/v1"
-	"github.com/syamsv/go-template/config"
+	v1 "github.com/syamsv/Advtrix/api/v1"
+	"github.com/syamsv/Advtrix/config"
 )
 
 var app *fiber.App

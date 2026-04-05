@@ -8,14 +8,15 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	"github.com/syamsv/go-template/config"
+	"github.com/syamsv/Advtrix/common/views"
+	"github.com/syamsv/Advtrix/config"
 )
 
 func AuthMiddleware(c fiber.Ctx) error {
 	auth := c.Get("Authorization")
 	token, found := strings.CutPrefix(auth, "Bearer ")
 	if !found || token != config.INTERNAL_AUTH_PARAMATER {
-		return unauthorized(c)
+		return views.Unauthorized(c)
 	}
 	return c.Next()
 }
@@ -58,7 +59,7 @@ func RecoverMiddleware(c fiber.Ctx) error {
 				zap.String("path", c.Path()),
 				zap.Stack("stacktrace"),
 			)
-			_ = errorResponse(c, 500, "Internal Server Error")
+			_ = views.ErrorResponse(c, 500, "Internal Server Error")
 		}
 	}()
 	return c.Next()

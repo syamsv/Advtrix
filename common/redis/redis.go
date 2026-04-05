@@ -7,7 +7,7 @@ import (
 	"github.com/redis/go-redis/v9"
 	"go.uber.org/zap"
 
-	"github.com/syamsv/go-template/config"
+	"github.com/syamsv/Advtrix/config"
 )
 
 var client *redis.Client

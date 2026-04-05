@@ -5,25 +5,23 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/syamsv/Advtrix/common/logger"
+	"github.com/syamsv/Advtrix/common/mongodb"
+	"github.com/syamsv/Advtrix/common/nts"
+	"github.com/syamsv/Advtrix/common/redis"
+	"github.com/syamsv/Advtrix/config"
+	"github.com/syamsv/Advtrix/server"
 	"go.uber.org/zap"
-
-	"github.com/syamsv/go-template/common/logger"
-	"github.com/syamsv/go-template/common/mongodb"
-	"github.com/syamsv/go-template/common/redis"
-	"github.com/syamsv/go-template/config"
-	"github.com/syamsv/go-template/server"
 )
 
-func init() {
+func main() {
 	config.LoadConfig(".env", "env", ".")
 	logger.Init()
-}
-
-func main() {
 	defer logger.Sync()
 
 	mongodb.Init()
 	redis.Init()
+	nts.Init()
 
 	go server.Run(config.SERVER_ADDRESS)
 
@@ -41,6 +39,7 @@ func main() {
 	zap.L().Info("shutting down")
 
 	server.Shutdown()
+	nts.Shutdown()
 	mongodb.Close()
 	redis.Close()
 

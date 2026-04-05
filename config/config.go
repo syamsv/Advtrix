@@ -21,3 +21,8 @@ var (
 	REDIS_PASSWORD string
 	REDIS_DB       int
 )
+
+var (
+	NTS_SERVER string
+	STEPSECOND int
+)

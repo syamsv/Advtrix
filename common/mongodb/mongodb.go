@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 	"go.uber.org/zap"
 
-	"github.com/syamsv/go-template/config"
+	"github.com/syamsv/Advtrix/config"
 )
 
 var client *mongo.Client

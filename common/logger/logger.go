@@ -1,7 +1,7 @@
 package logger
 
 import (
-	"github.com/syamsv/go-template/config"
+	"github.com/syamsv/Advtrix/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
