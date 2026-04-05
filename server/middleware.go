@@ -1,6 +1,7 @@
 package server
 
 import (
+	"crypto/subtle"
 	"strings"
 	"time"
 
@@ -8,6 +9,7 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
+	"github.com/syamsv/Advtrix/common/nts"
 	"github.com/syamsv/Advtrix/common/views"
 	"github.com/syamsv/Advtrix/config"
 )
@@ -15,8 +17,18 @@ import (
 func AuthMiddleware(c fiber.Ctx) error {
 	auth := c.Get("Authorization")
 	token, found := strings.CutPrefix(auth, "Bearer ")
-	if !found || token != config.INTERNAL_AUTH_PARAMATER {
+	if !found {
 		return views.Unauthorized(c)
+	}
+	if subtle.ConstantTimeCompare([]byte(token), []byte(config.INTERNAL_AUTH_PARAMATER)) != 1 {
+		return views.Unauthorized(c)
+	}
+	return c.Next()
+}
+
+func NTSHealthMiddleware(c fiber.Ctx) error {
+	if !nts.Healthy() {
+		return views.ErrorResponse(c, 503, "Service unavailable: NTS clock is unhealthy")
 	}
 	return c.Next()
 }

@@ -84,3 +84,12 @@ func DeleteMany(ctx context.Context, collection string, filter bson.M) (*mongo.D
 func CountDocuments(ctx context.Context, collection string, filter bson.M) (int64, error) {
 	return db.Collection(collection).CountDocuments(ctx, filter)
 }
+
+func CreateUniqueIndex(ctx context.Context, collection string, field string) error {
+	model := mongo.IndexModel{
+		Keys:    bson.D{{Key: field, Value: 1}},
+		Options: options.Index().SetUnique(true),
+	}
+	_, err := db.Collection(collection).Indexes().CreateOne(ctx, model)
+	return err
+}

@@ -23,6 +23,7 @@ var (
 )
 
 var (
-	NTS_SERVER string
-	STEPSECOND int
+	NTS_SERVER     string
+	STEPSECOND     int
+	ENCRYPTION_KEY string
 )

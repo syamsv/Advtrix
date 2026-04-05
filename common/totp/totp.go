@@ -3,12 +3,13 @@ package totp
 import (
 	"crypto/hmac"
 	"crypto/rand"
-	"crypto/sha1"
+	"crypto/sha256"
 	"encoding/base32"
 	"encoding/binary"
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/syamsv/Advtrix/config"
 	"github.com/syamsv/Advtrix/common/nts"
@@ -85,6 +86,23 @@ func ValidateTOTP(secret, code string) (bool, error) {
 	return false, nil
 }
 
+// NTSNow exposes the NTS-synced current time for callers that need to
+// compute time steps externally.
+func NTSNow() time.Time {
+	return nts.Now()
+}
+
+// GenerateTOTPAtCounter generates a 6-digit TOTP code for a specific counter value.
+func GenerateTOTPAtCounter(secret string, counter uint64) (string, error) {
+	key, err := decodeSecret(secret)
+	if err != nil {
+		return "", err
+	}
+
+	hash := calculateHash(key, counter)
+	return fmt.Sprintf("%06d", truncate(hash)), nil
+}
+
 // decodeSecret normalises and decodes a base32 secret into raw bytes.
 func decodeSecret(secret string) ([]byte, error) {
 	if secret == "" {
@@ -107,7 +125,7 @@ func calculateHash(key []byte, counter uint64) []byte {
 	buf := make([]byte, 8)
 	binary.BigEndian.PutUint64(buf, counter)
 
-	h := hmac.New(sha1.New, key)
+	h := hmac.New(sha256.New, key)
 	h.Write(buf)
 
 	return h.Sum(nil)

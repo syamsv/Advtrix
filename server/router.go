@@ -8,6 +8,9 @@ import (
 
 func mountv1Routes(router fiber.Router) {
 	router.Use(AuthMiddleware)
+	router.Use(NTSHealthMiddleware)
 
 	router.Post("/create", v1.Create)
+	router.Post("/getcode", v1.GetCode)
+	router.Post("/validate", v1.Validate)
 }

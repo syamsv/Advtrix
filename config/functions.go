@@ -29,6 +29,7 @@ func LoadConfig(filename, filetype, path string) {
 
 	NTS_SERVER = viper.GetString("NTS_SERVER")
 	STEPSECOND = viper.GetInt("STEPSECOND")
+	ENCRYPTION_KEY = viper.GetString("ENCRYPTION_KEY")
 
 	validate()
 }
@@ -86,5 +87,13 @@ func validate() {
 
 	if MONGODB_URI == "" {
 		log.Panicln("MONGODB_URI must not be empty")
+	}
+
+	if INTERNAL_AUTH_PARAMATER == "" {
+		log.Panicln("INTERNAL_AUTH_PARAMATER must not be empty — set it to a strong random token")
+	}
+
+	if len(ENCRYPTION_KEY) != 64 {
+		log.Panicln("ENCRYPTION_KEY must be a 64-character hex string (32 bytes for AES-256)")
 	}
 }
